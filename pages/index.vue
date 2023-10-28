@@ -1,4 +1,7 @@
 <template>
+  <head>
+    <title>Pizza Sales Report</title>
+  </head>
   <div class="mt-5 w-full mx-auto">
     <div class="grid grid-cols-2 w-full gap-4">
       <div class="bg-white p-5 shadow-md rounded-2xl flex-col">
@@ -13,12 +16,12 @@
 
     <div class="grid grid-cols-2 w-full gap-4">
       <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
-        <h2>Penjualan Berdasarkan Ukuran</h2>
+        <h2 class="text-sm">Penjualan Berdasarkan Ukuran</h2>
         <canvas id="pizzaSizeChart" width="200" height="200"></canvas>
       </div>
 
       <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
-        <h2>Penjualan Berdasarkan Kategori</h2>
+        <h2 class="text-sm">Penjualan Berdasarkan Kategori</h2>
         <canvas id="pizzaCategoryChart" width="200" height="200"></canvas>
       </div>
     </div>
@@ -27,8 +30,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Papa from 'papaparse';
 import Chart from 'chart.js/auto';
+import Papa from 'papaparse';
 
 const totalQuantity = ref(0);
 const totalSales = ref(0);
