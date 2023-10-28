@@ -16,9 +16,5 @@
     "chart.js": "^4.4.0",
     "papaparse": "^5.0.0",
     "vue-meta": "^3.0.0-alpha.2"
-  },
-  "engines": {
-    "node": "19"
   }
-  
 }
