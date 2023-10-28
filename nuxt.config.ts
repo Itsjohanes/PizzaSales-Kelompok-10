@@ -7,5 +7,7 @@ export default {
   modules: [
     '@nuxtjs/tailwindcss'
   ],
-
+  router: {
+    base: '/PizzaSales/',
+  },
 };
