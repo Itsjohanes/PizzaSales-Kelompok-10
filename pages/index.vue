@@ -16,7 +16,7 @@
 
     <div class="grid grid-cols-2 w-full gap-4">
       <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
-        <h2 class="text-sm">Penjualan Berdasarkan Ukuran</h2>
+        <h2 class="text-sm">Penjualan Berdasarkan Kategori</h2>
         <canvas id="pizzaSizeChart" width="200" height="200"></canvas>
       </div>
 
@@ -28,94 +28,98 @@
   </div>
 </template>
 
-<script setup>
+
+<script>
 import { ref, onMounted } from 'vue';
-import Chart from 'chart.js/auto';
 import Papa from 'papaparse';
+import Chart from 'chart.js/auto';
 
-const totalQuantity = ref(0);
-const totalSales = ref(0);
+export default {
+  setup() {
+    const totalQuantity = ref(0);
+    const totalSales = ref(0);
 
-// Data for the pie charts
-const sizeData = ref([]);
-const sizeLabels = ref([]);
-const categoryData = ref([]);
-const categoryLabels = ref([]);
+    // Data for the pie charts
+    const sizeData = ref([]);
+    const sizeLabels = ref([]);
+    const categoryData = ref([]);
+    const categoryLabels = ref([]);
 
-// Function to parse the CSV and calculate statistics
-async function parseCSV() {
-  const response = await fetch('https://www.miftahalamsyah.my.id/pizza.csv');
-  if (!response.ok) {
-    console.error('Failed to fetch CSV data');
-    return;
-  }
-  const text = await response.text();
-
-  Papa.parse(text, {
-    header: true,
-    dynamicTyping: true,
-    complete: function (results) {
-      const data = results.data;
-
-      totalQuantity.value = data.reduce((total, item) => total + (item.quantity || 0), 0);
-      totalSales.value = data.reduce((total, item) => total + (item.total_price || 0), 0);
-
-      // Calculate total sale by Size (pizza_size & quantity) for the pie chart
-      const sizeCounts = {};
-      data.forEach(item => {
-        const size = item.pizza_size;
-        if (size) {
-          sizeCounts[size] = (sizeCounts[size] || 0) + item.quantity;
+    onMounted(() => {
+      // Function to parse the CSV and calculate statistics
+      async function parseCSV() {
+        const response = await fetch('https://www.miftahalamsyah.my.id/pizza.csv');
+        if (!response.ok) {
+          console.error('Failed to fetch CSV data');
+          return;
         }
-      });
+        const text = await response.text();
 
-      sizeLabels.value = Object.keys(sizeCounts);
-      sizeData.value = Object.values(sizeCounts);
+        Papa.parse(text, {
+          header: true,
+          dynamicTyping: true,
+          complete: function (results) {
+            const data = results.data;
 
-      // Calculate total sale by Category (pizza_category & quantity) for the pie chart
-      const categoryCounts = {};
-      data.forEach(item => {
-        const category = item.pizza_category;
-        if (category) {
-          categoryCounts[category] = (categoryCounts[category] || 0) + item.quantity;
-        }
-      });
+            totalQuantity.value = data.reduce((total, item) => total + (item.quantity || 0), 0);
+            totalSales.value = data.reduce((total, item) => total + (item.total_price || 0), 0);
 
-      categoryLabels.value = Object.keys(categoryCounts);
-      categoryData.value = Object.values(categoryCounts);
+            // Calculate total sale by Size (pizza_size & quantity) for the pie chart
+            const sizeCounts = {};
+            data.forEach(item => {
+              const size = item.pizza_size || 'Undefined'; // Use 'Undefined' for undefined values
+              sizeCounts[size] = (sizeCounts[size] || 0) + item.quantity;
+            });
 
-      createPieChart('pizzaSizeChart', sizeLabels.value, sizeData.value);
-      createPieChart('pizzaCategoryChart', categoryLabels.value, categoryData.value);
-    }
-  });
-}
+            sizeLabels.value = Object.keys(sizeCounts);
+            sizeData.value = Object.values(sizeCounts);
 
-// Function to create a pie chart
-function createPieChart(canvasId, labels, data) {
-  const ctx = document.getElementById(canvasId).getContext('2d');
-  const pieChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          data: data,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.7)',
-            'rgba(54, 162, 235, 0.7)',
-            'rgba(255, 206, 86, 0.7)',
-            'rgba(75, 192, 192, 0.7)',
-            'rgba(153, 102, 255, 0.7)',
-          ],
-        },
-      ],
-    },
-  });
-}
+            createPieChart('pizzaSizeChart', sizeLabels.value, sizeData.value);
 
-onMounted(() => {
-  parseCSV();
-});
+            // Calculate total sale by Category (pizza_category & quantity) for the pie chart
+            const categoryCounts = {};
+            data.forEach(item => {
+              const category = item.pizza_category || 'Undefined'; // Use 'Undefined' for undefined values
+              categoryCounts[category] = (categoryCounts[category] || 0) + item.quantity;
+            });
+
+            categoryLabels.value = Object.keys(categoryCounts);
+            categoryData.value = Object.values(categoryCounts);
+
+            createPieChart('pizzaCategoryChart', categoryLabels.value, categoryData.value);
+          },
+        });
+      }
+
+      // Function to create a pie chart
+      function createPieChart(canvasId, labels, data) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                data: data,
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.7)',
+                  'rgba(54, 162, 235, 0.7)',
+                  'rgba(255, 206, 86, 0.7)',
+                  'rgba(75, 192, 192, 0.7)',
+                  'rgba(153, 102, 255, 0.7)',
+                ],
+              },
+            ],
+          },
+        });
+      }
+
+      parseCSV();
+    });
+
+    return { totalQuantity, totalSales };
+  },
+};
 </script>
 
 <style scoped>
