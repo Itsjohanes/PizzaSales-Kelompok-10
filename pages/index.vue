@@ -86,7 +86,7 @@ export default {
     onMounted(() => {
       // Function to parse the CSV and calculate statistics
       async function parseCSV() {
-        const response = await fetch('http://localhost:3000/pizza.csv');
+        const response = await fetch('/pizza.csv');
         if (!response.ok) {
           console.error('Failed to fetch CSV data');
           return;

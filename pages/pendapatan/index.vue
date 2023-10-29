@@ -1,11 +1,11 @@
 <template>
     <head>
-      <title>Tren Penjualan Setiap Bulan | Pizza Sales Report</title>
+      <title>Tren Pendapatan Setiap Bulan | Pizza Sales Report</title>
     </head>
     <div
       class="my-5 bg-white rounded-2xl font-semibold text-center text-sm text-gray-600 p-5 shadow-md w-full"
     >
-      Tren Penjualan Setiap Bulan
+      Tren Pendapatan Setiap Bulan
       <canvas id="pizzaChart" width="1024" height="720" class="mt-12"></canvas>
     </div>
     
@@ -28,7 +28,7 @@
   
   // Function to fetch and process data
   async function fetchDataAndCreateChart() {
-    const response = await fetch('http://localhost:3000/pizza.csv');
+    const response = await fetch('/pizza.csv');
     const text = await response.text();
   
     Papa.parse(text, {
