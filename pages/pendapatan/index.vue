@@ -28,7 +28,7 @@
   
   // Function to fetch and process data
   async function fetchDataAndCreateChart() {
-    const response = await fetch('https://www.miftahalamsyah.my.id/pizza.csv');
+    const response = await fetch('http://localhost:3000/pizza.csv');
     const text = await response.text();
   
     Papa.parse(text, {

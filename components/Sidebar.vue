@@ -1,5 +1,5 @@
 <template>
-<div class="transition-all top-0 bottom-0 min-h-screen duration-300 transform z-40 w-48 bg-white pt-7 pb-10 shadow-md hidden md:block">
+<div class="transition-all fixed top-0 bottom-0 min-h-screen duration-300 transform z-40 w-48 bg-white pt-7 pb-10 shadow-md hidden md:block">
   <div class="px-4 py-6">
     <div class="text-center text-2xl">
       📈

@@ -3,9 +3,9 @@
 <template>
   <section>
     
-    <body class="flex">
+    <body>
         <Sidebar/>
-        <div class="font-extrabold m-8 text-2xl text-stone-600 min-h-scree8">
+        <div class="ml-52 sm:ml-0 lg:ml-52 font-extrabold px-4 mt-12 text-2xl text-stone-600 min-h-screen min-w-6xl">
           Pizza Sales Report <span class="text-lg font-semibold ml-2">Jan 2015 - Dec 2015</span>
             <slot/>
             <div class="text-center mt-24">

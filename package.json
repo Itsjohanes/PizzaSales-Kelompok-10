@@ -15,6 +15,9 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.8.1",
     "chart.js": "^4.4.0",
-    "vue-meta": "^3.0.0-alpha.2"
+    "csv-parser": "^3.0.0",
+    "fs": "^0.0.1-security",
+    "vue-meta": "^3.0.0-alpha.2",
+    "vue-papa-parse": "^3.1.0"
   }
 }
