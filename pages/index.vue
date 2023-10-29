@@ -42,14 +42,18 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-3 sm:grid-cols-1 lg:grid-cols-3 gap-4 mt-5">
       <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
         <h2 class="text-sm">Penjualan Berdasarkan Ukuran</h2>
-        <canvas id="pizzaSizeChart" width="200" height="200"></canvas>
+        <canvas id="pizzaSizeChart" width="100" height="100"></canvas>
       </div>
       <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
         <h2 class="text-sm">Penjualan Berdasarkan Kategori</h2>
-        <canvas id="pizzaCategoryChart" width="200" height="200"></canvas>
+        <canvas id="pizzaCategoryChart" width="100" height="100"></canvas>
+      </div>
+      <div class="pie-chart-container bg-white rounded-2xl shadow-md p-5">
+        <h2 class="text-sm">Tren Order Harian</h2>
+        <canvas id="orderTrendChart" width="100" height="100"></canvas>
       </div>
     </div>
   </div>
@@ -66,6 +70,7 @@ export default {
     const totalOrder = ref(0);
     const totalQuantity = ref(0);
     const totalSales = ref(0);
+    const orderTrendData = ref(null);
 
     // Keep track of unique order IDs
     const uniqueOrderIds = new Set();
@@ -75,6 +80,8 @@ export default {
     const sizeLabels = ref([]);
     const categoryData = ref([]);
     const categoryLabels = ref([]);
+
+    const popularPizzas = ref([]);
 
     onMounted(() => {
       // Function to parse the CSV and calculate statistics
@@ -92,12 +99,24 @@ export default {
           complete: function (results) {
             const data = results.data;
 
+            // Group order data by day of the week
+            const dailyTrend = new Array(7).fill(0); // Initialize an array to hold daily order counts
+
             // Calculate unique order IDs and add to the set
             data.forEach(item => {
               const order_id = item.order_id;
               if (order_id && !uniqueOrderIds.has(order_id)) {
                 uniqueOrderIds.add(order_id);
                 totalOrder.value += 1;
+              }
+            });
+
+            // Calculate daily order trend
+            data.forEach((item) => {
+              const orderDate = new Date(item.order_date);
+              if (!isNaN(orderDate)) {
+                const dayOfWeek = orderDate.getDay(); // 0 for Sunday, 1 for Monday, ..., 6 for Saturday
+                dailyTrend[dayOfWeek] += 1;
               }
             });
 
@@ -125,6 +144,7 @@ export default {
             sizeData.value = Object.values(sizeCounts);
 
             createPieChart('pizzaSizeChart', sizeLabels.value, sizeData.value);
+            createTrendChart('orderTrendChart', dailyTrend);
 
             // Calculate total sale by Category (pizza_category & quantity) for the pie chart
             const categoryCounts = {};
@@ -154,11 +174,11 @@ export default {
               {
                 data: data,
                 backgroundColor: [
-                  'rgba(255, 99, 132, 0.7)',
-                  'rgba(54, 162, 235, 0.7)',
-                  'rgba(255, 206, 86, 0.7)',
-                  'rgba(75, 192, 192, 0.7)',
-                  'rgba(153, 102, 255, 0.7)',
+                  '#8D6E63',
+                  '#FF6B35',
+                  '#D14932',
+                  '#228B22',
+                  '#FFD700',
                 ],
               },
             ],
@@ -166,10 +186,36 @@ export default {
         });
       }
 
+      // Function to create a line chart for the daily trend
+      function createTrendChart(canvasId, data) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            datasets: [
+              {
+                label: 'Order Harian',
+                data: data,
+                borderColor: '#8D6E63',
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+
       parseCSV();
     });
 
-    return { totalQuantity, totalSales, totalOrder, averageOrderValue };
+    return { totalQuantity, totalSales, totalOrder, averageOrderValue, orderTrendData };
   },
 };
 </script>
@@ -177,6 +223,5 @@ export default {
 <style scoped>
 .pie-chart-container {
   text-align: center;
-  margin: 20px;
 }
 </style>
