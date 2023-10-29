@@ -6,38 +6,38 @@
     </div>
     <ul class="mt-6 space-y-1 text-center">
       <li>
-        <nuxt-link to="/" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/')}">
+        <nuxt-link to="/" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/')}">
           Dashboard
         </nuxt-link>
       </li>
 
       <li>
-        <nuxt-link to="/ukuran" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/ukuran')}">
+        <nuxt-link to="/ukuran" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/ukuran')}">
           Ukuran
         </nuxt-link>
       </li>
 
       <li>
-        <nuxt-link to="/tren" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/tren')}">
+        <nuxt-link to="/tren" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/tren')}">
           Tren
         </nuxt-link>
       </li>
       
       <li>
-        <nuxt-link to="/harga" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/harga')}">
+        <nuxt-link to="/harga" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/harga')}">
           Harga
         </nuxt-link>
       </li>
 
       <li>
-        <nuxt-link to="/pendapatan" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/pendapatan')}">
+        <nuxt-link to="/pendapatan" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/pendapatan')}">
           Pendapatan
         </nuxt-link>
       </li>
 
       <li>
-        <nuxt-link to="/vegetarian" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-stone-100': isActive('/vegetarian')}">
-          Vegetarian
+        <nuxt-link to="/vegetarian" class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700" :class="{'bg-earthy-brown text-stone-50': isActive('/vegetarian')}">
+          Kategori
         </nuxt-link>
       </li>
     </ul>
